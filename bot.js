@@ -39,7 +39,7 @@ Redisclient.on("message", function(channel, message) {
   	+ util.format("▸ osu! • #%s • %spp\n",Score.user.rank,Score.user.pp)
 	+ util.format("▸ %s • %s • %s% • %s\n",osu.getFc(Score.score.combo,Score.beatmap.max_combo,Score.score.missess), "{ranking}" ,(Score.score.accuracy * 100).toFixed(2),osu.getScoreMods(Score.score.mods))
 	+ util.format("[%s](https://osu.gatari.pw/b/%s)",Score.beatmap.song_name,Score.beatmap.beatmapID))
-  .setThumbnail(util.format("https://b.ppy.sh/thumb/%s.jpg",Score.beatmap.beatmapID))
+  .setThumbnail(util.format("https://b.ppy.sh/thumb/%s.jpg",Score.beatmap.beatmapSetID))
   Discordchannel.send({embed});
 });
 
