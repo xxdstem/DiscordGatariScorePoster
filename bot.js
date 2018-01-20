@@ -25,19 +25,23 @@ client.on("message", (message) => {
     return;
   }
 });
-
+var alert_threshold = {0: 300, 1:400, 2:450, 3: 520};
+modeColors = {0:0x00AE86,1:0xABA900,2:0xAB0075,3:0x0089AB};
 
 Redisclient.on("message", function(channel, message) {
 	console.log("got score");
 	if(Discordchannel == null) return;
 	Score = JSON.parse(message);
-	console.log(Score);
+	if(alert_threshold[Score.gm] > Score.score.pp) return;
+	var gainedPP = Score.user.pp - Score.user.oldpp;
+	gainedPP = (gainedPP != 0 ? "("+(gainedPP > 0 ? "+" : "")+gainedPP+"pp)" : "");
+	var gainedAcc = (Score.user.accuracy * 100 - Score.user.oldaccuracy * 100).toFixed(2);
 	const embed = new Discord.RichEmbed()
-  	.setAuthor(Score.user.username, "https://a.gatari.pw/"+Score.user.userID)
-  	.setColor(0x00AE86)
-  	.setDescription(util.format("__New score! **%spp** __\n",Score.score.pp)
-  	+ util.format("▸ osu! • #%s • %spp\n",Score.user.rank,Score.user.pp)
-	+ util.format("▸ %s • %s • %s% • %s\n",osu.getFc(Score.score.combo,Score.beatmap.max_combo,Score.score.missess), "{ranking}" ,(Score.score.accuracy * 100).toFixed(2),osu.getScoreMods(Score.score.mods))
+  	.setAuthor(Score.user.username, "https://a.gatari.pw/"+Score.user.userID,"https://osu.gatari.pw/u/"+Score.user.userID)
+  	.setColor(modeColors[Score.gm])
+  	.setDescription(util.format("__New score! **%spp** %s #%s__\n",Score.score.pp, gainedPP,Score.score.rank)
+  	+ util.format("▸ %s • #%s • %spp • %s%\n",osu.getGameModeText(Score.gm),Score.user.rank,Score.user.pp,Score.user.accuracy.toFixed(2))
+	+ util.format("▸ %s • %s • %s% • %s\n",osu.getFc(Score.score.combo,Score.beatmap.max_combo,Score.score.missess), Score.score.ranking ,(Score.score.accuracy * 100).toFixed(2),osu.getScoreMods(Score.score.mods))
 	+ util.format("[%s](https://osu.gatari.pw/b/%s)",Score.beatmap.song_name,Score.beatmap.beatmapID))
   .setThumbnail(util.format("https://b.ppy.sh/thumb/%s.jpg",Score.beatmap.beatmapSetID))
   Discordchannel.send({embed});

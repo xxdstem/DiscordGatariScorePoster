@@ -1,34 +1,3 @@
-
-Osu.prototype.getRank = function ( mods, acc, c300, c100, c50, cmiss) {
-	var total = c300+c100+c50+cmiss;
-
-	var hdfl = (mods & (Hidden | Flashlight | FadeIn)) > 0;
-
-	var ss = hdfl ? "xh" : "x";
-	var s = hdfl ? "sh" : "x";
-
-
-			var ratio300 = c300 / total;
-			var ratio50 = c50 / total;
-
-			if (ratio300 == 1)
-				return ss;
-
-			if (ratio300 > 0.9 && ratio50 <= 0.01 && cmiss == 0)
-				return s;
-
-			if ((ratio300 > 0.8 && cmiss == 0) || (ratio300 > 0.9))
-				return "a";
-
-			if ((ratio300 > 0.7 && cmiss == 0) || (ratio300 > 0.8))
-				return "b";
-
-			if (ratio300 > 0.6)
-				return "c";
-
-			return "d";
-}
-
 Osu.prototype.getFc = function(combo, maxCombo, misses){
 	var TotalCombo = combo+"/"+maxCombo;
 	if(misses == 0){
@@ -39,7 +8,6 @@ Osu.prototype.getFc = function(combo, maxCombo, misses){
 		else return TotalCombo;
 	}
 }
-
 
 Osu.prototype.getScoreMods = function(m) {
 	var r = '';
@@ -142,7 +110,14 @@ Osu.prototype.getScoreMods = function(m) {
 		return 'NOMOD';
 	}
 }
-
+Osu.prototype.getGameModeText = function(gameMode){
+	switch(gameMode) {
+		case 0: return "osu!";
+		case 1: return "Taiko";
+		case 2: return "Catch the Beat";
+		case 3: return "osu!mania"
+	}
+}
 var None = 0;
 var NoFail = 1;
 var Easy = 2;
