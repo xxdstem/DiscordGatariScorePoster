@@ -1,4 +1,6 @@
 Osu.prototype.getFc = function(combo, maxCombo, misses){
+	if(maxCombo == 0)
+		return combo+"x"+(misses > 0 ? " "+misses+"xMiss" : "");
 	var TotalCombo = combo+"/"+maxCombo;
 	if(misses == 0){
 		if(combo+12 < maxCombo) return TotalCombo+" SB"; else return "FC";
